@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: >-
+  If you use this library, please cite it as below.  The theory it
+  mechanizes is due to Lanese, Phillips and Ulidowski; please cite their
+  paper as well (see the references in README.md).
+title: >-
+  cslib-reversible: An axiom layer for reversible computation on top of
+  CSLib's labelled transition systems
+abstract: >-
+  A Lean 4 formalization of the Lanese-Phillips-Ulidowski axioms for
+  reversible computation (Square Property, Backward Transitions are
+  Independent, well-foundedness) over CSLib's labelled transition systems,
+  together with the theorems they entail: the Parabolic Lemma, causal
+  consistency, causal safety and causal liveness.  A reversible language
+  discharges the axioms once and inherits the theory.  The development is
+  free of sorry and of Classical.choice.
+type: software
+authors:
+  - given-names: Tetsuo
+    family-names: Yokoyama
+    affiliation: Nanzan University
+    orcid: "https://orcid.org/0000-0002-7677-143X"
+repository-code: "https://github.com/yokoyama-lab/cslib-reversible"
+license: Apache-2.0
+keywords:
+  - reversible computation
+  - labelled transition systems
+  - causal consistency
+  - Lean 4
+  - formal verification

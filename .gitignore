@@ -1,0 +1,8 @@
+/.lake
+*.olean
+*.ilean
+*.trace
+
+# ローカル作業メモ。リポジトリの成果物とは性質が違うので公開しない。
+CLAUDE.md
+AGENTS.md

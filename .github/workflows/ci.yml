@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+# The axiom audit lives in `CslibReversible/Audit.lean`: `#print axioms` is
+# wrapped in `#guard_msgs`, so a stray `sorryAx` or a new axiom makes the
+# *build* fail.  That is why this workflow does not grep for `sorry` — the
+# kernel check is stronger and has no false positives from docstrings.
+jobs:
+  build:
+    name: Build and check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installs elan from `lean-toolchain`, fetches the Mathlib cache (CSLib
+      # pins its own Mathlib, so this is what keeps CI at minutes rather than
+      # hours), and runs `lake build`.
+      # `--wfail` is on: the build is warning-free as of 2026-08-08, and the
+      # only way it stays that way is if a new warning breaks CI.  The two
+      # classes that had to be cleared first were the missing `Authors:` line
+      # in every file header and two uses of `show` where `change` is meant.
+      - uses: leanprover/lean-action@v1
+        with:
+          build-args: "--iofail --wfail"
+
+      # The root file must import every module, in sorted order.  Without this
+      # a new file can be silently unverified: it builds locally because the
+      # author imports it by hand, but nothing in CI ever reaches it.
+      - name: lake exe mk_all --check
+        run: lake exe mk_all --check
+
+      # Mathlib's text-based style linter (adaptation notes, line endings,
+      # trailing whitespace, stray semicolons).  The module argument is not
+      # optional: without it the linter falls back to a default target that
+      # does not include our files, and passes no matter what they contain —
+      # measured on 2026-08-08 by feeding it a deliberately broken file.
+      - name: lake exe lint-style
+        run: lake exe lint-style CslibReversible

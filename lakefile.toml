@@ -1,0 +1,38 @@
+name = "cslib-reversible"
+version = "0.1.0"
+defaultTargets = ["CslibReversible"]
+
+# The Lean-side style linters.  `lake exe lint-style` is text-based and only
+# covers four things (adaptation notes, line endings, trailing whitespace,
+# stray semicolons); everything else — line length, header shape, `simp`
+# hygiene — is a Lean linter switched on here.  Without this table those
+# linters never run, and nine over-long lines went unnoticed.
+# The disabled entries mirror CSLib's own lakefile: they are Mathlib linters
+# that do not apply to a downstream package.
+[leanOptions]
+weak.linter.mathlibStandardSet = true
+weak.linter.flexible = true
+weak.linter.pythonStyle = false
+weak.linter.checkInitImports = false
+weak.linter.allScriptsDocumented = false
+weak.linter.unicodeLinter = false
+# `unusedDecidableInType` asks us to drop `[DecidableEq _]` hypotheses that the
+# *statement* does not mention and reach for `classical` in the proof instead.
+# Here that trade is the wrong way round: the decidable case splits are what
+# keep this development choice-free, and `Audit.lean` pins every result to
+# `propext`/`Quot.sound`.  Measured on `bstep_diamond` (2026-08-08): dropping
+# the two instances moves it from `[propext]` to
+# `[propext, Classical.choice, Quot.sound]`.  Mathlib ships this linter off by
+# default for the same reason.
+weak.linter.unusedDecidableInType = false
+
+# CSLib pins its own Mathlib, so requiring CSLib is enough.
+# Pinned rather than tracking main: the axiom layer must not move
+# under us while the instances are being discharged.
+[[require]]
+name = "cslib"
+git = "https://github.com/leanprover/cslib"
+rev = "3aa9d4416c185e0b9faeb72bbd65abe85b95dbcc"
+
+[[lean_lib]]
+name = "CslibReversible"
