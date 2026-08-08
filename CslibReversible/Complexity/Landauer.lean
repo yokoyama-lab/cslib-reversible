@@ -42,13 +42,19 @@ tells us this" should be visible in the statement, not buried in prose.
   as a lower bound only, which is the direction that stays safe.
 - **Not that a real device attains it.**  "Practical erasure processes
   dissipate much more heat than the Landauer bound" (Chattopadhyay, Misra,
-  Pandit and Paul).  How much more depends entirely on the technology, and it
-  is worth resisting the usual "many orders of magnitude" gloss: the MANA
-  adiabatic microprocessor of Ayala, Tanaka, Saito, Nozoe and Takeuchi
+  Pandit and Paul).  *How much* more depends on the technology and on what one
+  counts as an operation, and the two must be quoted together: a CMOS gate
+  switch is `10⁴`–`10⁵` times `kT ln 2`, whereas the MANA adiabatic
+  superconducting microprocessor of Ayala, Tanaka, Saito, Nozoe and Takeuchi
   switches at 1.4 zJ per junction at 4.2 K, where `kT ln 2` is 0.0402 zJ — a
-  factor of about 35, not a factor of millions.  For the reversible
-  technologies this development is about, the bound is closer to binding than
-  the folklore suggests.
+  factor of about 35.  So for the reversible technologies this development is
+  about, the bound is far closer to binding than for CMOS.
+- **Not that saving garbage bits saves proportional system energy.**  Logic
+  switching is only 20–30% of a modern processor's energy (Zhirnov, Cavin and
+  Gammaitoni); over half the die energy goes to caches and register files
+  (Horowitz).  A bound on erased bits bounds the *logic* term, and the
+  system-level saving is diluted by that term's share.  This layer says
+  nothing about the wires.
 - **Not that measured surplus is provable waste.**  If a machine's garbage
   register is wider than `garbageBits f`, that is not by itself evidence of a
   wasteful design: the extra width may be separating inputs outside whatever
@@ -77,6 +83,12 @@ tells us this" should be visible in the statement, not buried in prose.
   Superconductor Josephson Junction Devices.*  IEEE Journal of Solid-State
   Circuits, 2020.
   [doi:10.1109/JSSC.2020.3041338](https://doi.org/10.1109/JSSC.2020.3041338)
+* V. V. Zhirnov, R. K. Cavin, L. Gammaitoni.  *Minimum Energy of Computing,
+  Fundamental Considerations.*  In *ICT-Energy — Concepts Towards Zero-Power
+  ICT*, InTech, 2014.  [doi:10.5772/57346](https://doi.org/10.5772/57346)
+* M. Horowitz.  *Computing's energy problem (and what we can do about it).*
+  ISSCC 2014.
+  [doi:10.1109/ISSCC.2014.6757323](https://doi.org/10.1109/ISSCC.2014.6757323)
 -/
 
 universe u v w
