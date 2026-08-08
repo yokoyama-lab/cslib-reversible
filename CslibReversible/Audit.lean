@@ -15,6 +15,8 @@ import CslibReversible.NRE
 import CslibReversible.CausalLiveness
 import CslibReversible.Independence
 import CslibReversible.Instances.Product
+import CslibReversible.Complexity.Garbage
+import CslibReversible.Complexity.Machine
 
 /-!
 # Axiom audit
@@ -23,6 +25,13 @@ The results of this development must rest on nothing but the standard
 axioms of Lean's classical logic.  `#print axioms` is wrapped in
 `#guard_msgs` so that the build *fails* if a `sorryAx` ever appears, rather
 than merely reporting it.
+
+The transition-system layer gets by on `propext` and `Quot.sound`.  The
+complexity layer does not, and the pins below record where the line falls:
+counting with `Finset` drags in `Classical.choice` through Mathlib's own
+cardinality lemmas, so `Cslib.Reversible.fiberWidth_le_card` cannot be
+choice-free however it is proved.  Pinning it is what keeps that fact a
+measured one rather than an assumed one.
 -/
 
 open Cslib.LTS
@@ -210,3 +219,49 @@ open Cslib.LTS
 /-- info: 'Cslib.LTS.lbl_ne_of_cIndep' depends on axioms: [propext] -/
 #guard_msgs in
 #print axioms Cslib.LTS.lbl_ne_of_cIndep
+
+/-! ## The complexity layer -/
+
+-- `whitespace := lax` because these names are long enough that the single-line
+-- message would break the 100-column style limit.
+/--
+info: 'Cslib.Reversible.fiberWidth_le_card' depends on axioms: [propext, Classical.choice,
+  Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.fiberWidth_le_card
+
+/--
+info: 'Cslib.Reversible.realization_fin_fiberWidth' depends on axioms: [propext, Classical.choice,
+  Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.realization_fin_fiberWidth
+
+/--
+info: 'Cslib.Reversible.isLeast_garbageCard' depends on axioms: [propext, Classical.choice,
+  Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.isLeast_garbageCard
+
+/--
+info: 'Cslib.Reversible.garbageBits_eq_zero_iff' depends on axioms: [propext, Classical.choice,
+  Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.garbageBits_eq_zero_iff
+
+-- The line between the two layers is visible here.  That a reversible machine
+-- ends distinct inputs in distinct configurations is `propext` alone; choice
+-- appears only once the configurations start being counted.
+/-- info: 'Cslib.Reversible.Computes.final_injective' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms Cslib.Reversible.Computes.final_injective
+
+/--
+info: 'Cslib.Reversible.Computes.fiberWidth_le_card' depends on axioms: [propext,
+  Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.Computes.fiberWidth_le_card

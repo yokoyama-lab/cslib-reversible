@@ -48,6 +48,30 @@ reversibility, not a neighbour of it.
 | `NRE` | forward normal form, Lemma 4.20, **no repeated events** (Prop. 4.21) |
 | `CausalLiveness` | `BFCIRE`, the commuting argument, **causal liveness** (Thm. 5.29) |
 
+## The resources
+
+Reversibility has a cost that irreversible computation does not pay, and it
+can be pinned down exactly.  To compute a non-injective `f : X → Y` reversibly
+you must emit, alongside the answer, something that tells apart the inputs `f`
+conflates — the **garbage**.
+
+| Module | Contents |
+|---|---|
+| `Complexity.Garbage` | `Realization`, `fiberWidth`, `garbageBits`; the lower bound, the matching construction, and `isLeast_garbageCard` — the fiber width **is** the minimum, not an estimate |
+| `Complexity.Machine` | `Computes`: what a reversible machine ends up holding is bounded below by the same number, for every machine, using nothing but reversibility |
+| `Complexity.Examples` | the definition checked against the standard gates |
+
+The minimum number of garbage values for `f` is `max_y |f⁻¹(y)|`.  The
+construction achieving it ranks each input inside its own fiber, so the garbage
+values it uses form an initial segment — this is the *g-minimality* of Glück
+and Yokoyama, mechanized.
+
+The check against known gates is in `Complexity.Examples`, and it turns up
+something the usual statements do not say.  Conjunction needs 3 garbage values,
+so 2 bits; the Toffoli gate keeps both inputs, so 2 bits.  Toffoli is therefore
+optimal **in bits** — but it spends 4 values where 3 suffice, so it is not
+optimal **in values**, and no bit-addressed register can close that gap.
+
 ## The instances
 
 Each instance discharges the axioms and inherits everything above.
@@ -66,10 +90,19 @@ Each instance discharges the axioms and inherits everything above.
 
 Nothing here is admitted: the library builds with **no `sorry`**, and
 `Audit.lean` pins every headline result's axiom set with `#guard_msgs`, so
-the build fails if one changes.  The only axiom used anywhere is `propext`.
-In particular `Classical.choice` is not used: the case split in
-`bstep_diamond` goes through `DecidableEq`, and `reflTransGen_cases_head` is
-reproved rather than taken from Mathlib, which proves it classically.
+the build fails if one changes.
+
+The transition-system layer uses only `propext`.  In particular
+`Classical.choice` is not used: the case split in `bstep_diamond` goes through
+`DecidableEq`, and `reflTransGen_cases_head` is reproved rather than taken
+from Mathlib, which proves it classically.
+
+The complexity layer is **not** choice-free, and cannot be made so while it
+counts with `Finset`: every Mathlib cardinality lemma it rests on already
+depends on `Classical.choice`.  The audit records exactly where the line
+falls — `Computes.final_injective`, which is reversibility doing the work, is
+still `propext` alone; choice enters only once configurations start being
+counted.
 
 Every axiom in the development is one of LPU's own (`SquareProperty`, `BTI`,
 `WellFoundedBwd`, `CPI`, `CLG`, `IRE`, `BFCIRE`, plus irreflexivity and

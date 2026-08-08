@@ -4,6 +4,9 @@ import CslibReversible.CausalConsistency
 import CslibReversible.CausalEquiv
 import CslibReversible.CausalLiveness
 import CslibReversible.CausalSafety
+import CslibReversible.Complexity.Examples
+import CslibReversible.Complexity.Garbage
+import CslibReversible.Complexity.Machine
 import CslibReversible.Defs
 import CslibReversible.Diamond
 import CslibReversible.EventCount
