@@ -60,6 +60,7 @@ conflates — the **garbage**.
 | `Complexity.Garbage` | `Realization`, `fiberWidth`, `garbageBits`; the lower bound, the matching construction, and `isLeast_garbageCard` — the fiber width **is** the minimum, not an estimate |
 | `Complexity.Machine` | `Computes`: what a reversible machine ends up holding is bounded below by the same number, for every machine, using nothing but reversibility |
 | `Complexity.Examples` | the definition checked against the standard gates |
+| `Complexity.ToffoliMachine` | a machine that meets the bound, so that the bound is about something |
 
 The minimum number of garbage values for `f` is `max_y |f⁻¹(y)|`.  The
 construction achieving it ranks each input inside its own fiber, so the garbage
@@ -82,6 +83,7 @@ Each instance discharges the axioms and inherits everything above.
 | `Instances.Product` | two components with per-component histories — a family discharging every axiom |
 | `Instances.CCSK` | CCS with communication keys (Phillips–Ulidowski) |
 | `Instances.RCore` | R-CORE, a minimal reversible imperative language |
+| `Instances.Circuit` | reversible circuits: a sequence of gates, each a bijection of the register |
 | `Instances.Deterministic` | reversible deterministic systems |
 | `Instances.Grounded` | systems whose computations start from an origin |
 | `Instances.Restrict` | restricting an instance along a predicate |

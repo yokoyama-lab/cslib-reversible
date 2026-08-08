@@ -14,6 +14,7 @@ import CslibReversible.EventCount
 import CslibReversible.Events
 import CslibReversible.Independence
 import CslibReversible.Instances.CCSK
+import CslibReversible.Instances.Circuit
 import CslibReversible.Instances.Deterministic
 import CslibReversible.Instances.Grounded
 import CslibReversible.Instances.History
