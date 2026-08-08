@@ -40,9 +40,15 @@ tells us this" should be visible in the statement, not buried in prose.
   achievable for infinite-time processes" (Konopik, Korten, Lutz and Linke).
   Erasing in finite time costs strictly more.  `landauer` is therefore stated
   as a lower bound only, which is the direction that stays safe.
-- **Not that a real device is near it.**  "Practical erasure processes
+- **Not that a real device attains it.**  "Practical erasure processes
   dissipate much more heat than the Landauer bound" (Chattopadhyay, Misra,
-  Pandit and Paul); it is not this bound that is binding in practice.
+  Pandit and Paul).  How much more depends entirely on the technology, and it
+  is worth resisting the usual "many orders of magnitude" gloss: the MANA
+  adiabatic microprocessor of Ayala, Tanaka, Saito, Nozoe and Takeuchi
+  switches at 1.4 zJ per junction at 4.2 K, where `kT ln 2` is 0.0402 zJ — a
+  factor of about 35, not a factor of millions.  For the reversible
+  technologies this development is about, the bound is closer to binding than
+  the folklore suggests.
 - **Not that measured surplus is provable waste.**  If a machine's garbage
   register is wider than `garbageBits f`, that is not by itself evidence of a
   wasteful design: the extra width may be separating inputs outside whatever
@@ -66,6 +72,11 @@ tells us this" should be visible in the statement, not buried in prose.
 * P. Chattopadhyay, A. Misra, T. Pandit, G. Paul.  *Landauer principle and
   thermodynamics of computation.*  Reports on Progress in Physics, 2025.
   [doi:10.1088/1361-6633/add6b3](https://doi.org/10.1088/1361-6633/add6b3)
+* C. L. Ayala, T. Tanaka, R. Saito, M. Nozoe, N. Takeuchi.  *MANA: A Monolithic
+  Adiabatic iNtegration Architecture Microprocessor Using 1.4-zJ/op Unshunted
+  Superconductor Josephson Junction Devices.*  IEEE Journal of Solid-State
+  Circuits, 2020.
+  [doi:10.1109/JSSC.2020.3041338](https://doi.org/10.1109/JSSC.2020.3041338)
 -/
 
 universe u v w
