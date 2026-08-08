@@ -61,11 +61,21 @@ conflates — the **garbage**.
 | `Complexity.Machine` | `Computes`: what a reversible machine ends up holding is bounded below by the same number, for every machine, using nothing but reversibility |
 | `Complexity.Examples` | the definition checked against the standard gates |
 | `Complexity.ToffoliMachine` | a machine that meets the bound, so that the bound is about something |
+| `Complexity.Landauer` | what clearing the garbage costs in energy, with Landauer's principle isolated as an explicit hypothesis |
 
 The minimum number of garbage values for `f` is `max_y |f⁻¹(y)|`.  The
 construction achieving it ranks each input inside its own fiber, so the garbage
 values it uses form an initial segment — this is the *g-minimality* of Glück
 and Yokoyama, mechanized.
+
+`Complexity.Landauer` carries that number over to energy.  Reversible
+computation is usually motivated by Landauer's principle, and the motivation
+only bites once the garbage has to be cleared — so the file proves the counting
+half (clearing the register erases at least `garbageBits f` bits) and takes
+Landauer's principle as a **hypothesis on the statement**, not as an axiom or
+an instance.  It appears in the type of every result that uses it, so the line
+between what is proved and what is assumed about the world is visible in the
+statement rather than in the prose around it.
 
 The check against known gates is in `Complexity.Examples`, and it turns up
 something the usual statements do not say.  Conjunction needs 3 garbage values,

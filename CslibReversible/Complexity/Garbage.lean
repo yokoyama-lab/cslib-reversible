@@ -178,6 +178,24 @@ that does the counting.
 -/
 
 /--
+**The garbage register really does take at least `fiberWidth f` distinct
+values.**
+
+This is sharper than a bound on the size of `G`, and it is the form the
+physical reading needs: what a machine must later erase is the values its
+garbage register actually visits, not the values its type could in principle
+hold.
+-/
+theorem fiberWidth_le_card_image {f : X → Y} [DecidableEq G] (R : Realization f G) :
+    fiberWidth f ≤ (Finset.univ.image R.garbage).card := by
+  refine Finset.sup_le fun y _ => ?_
+  refine Finset.card_le_card_of_injOn R.garbage
+    (fun a _ => Finset.mem_image_of_mem _ (Finset.mem_univ a)) ?_
+  intro x hx x' hx' h
+  rw [Finset.mem_coe, mem_fiber] at hx hx'
+  exact R.eq_of_fiber (by rw [hx, hx']) h
+
+/--
 **Every realization needs at least `fiberWidth f` garbage values.**
 
 The bound is on the *type* `G`, so it holds however the realization was built
@@ -185,13 +203,8 @@ and however wastefully it uses `G`.
 -/
 theorem fiberWidth_le_card {f : X → Y} [Fintype G] (R : Realization f G) :
     fiberWidth f ≤ Fintype.card G := by
-  refine Finset.sup_le fun y _ => ?_
-  have hcard : (fiber f y).card ≤ (Finset.univ : Finset G).card :=
-    Finset.card_le_card_of_injOn R.garbage (fun _ _ => Finset.mem_univ _) <| by
-      intro x hx x' hx' h
-      rw [Finset.mem_coe, mem_fiber] at hx hx'
-      exact R.eq_of_fiber (by rw [hx, hx']) h
-  exact hcard
+  classical
+  exact le_trans (fiberWidth_le_card_image R) (Finset.card_le_univ _)
 
 /-!
 ### The construction

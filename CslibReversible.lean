@@ -6,6 +6,7 @@ import CslibReversible.CausalLiveness
 import CslibReversible.CausalSafety
 import CslibReversible.Complexity.Examples
 import CslibReversible.Complexity.Garbage
+import CslibReversible.Complexity.Landauer
 import CslibReversible.Complexity.Machine
 import CslibReversible.Complexity.ToffoliMachine
 import CslibReversible.Defs
