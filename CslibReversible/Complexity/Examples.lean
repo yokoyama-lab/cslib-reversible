@@ -11,8 +11,14 @@ import Mathlib.Data.Fintype.Prod
 
 A definition of a resource is only worth having if it agrees with what is
 already known in the cases where something is known.  This file checks
-`fiberWidth` and `garbageBits` against the standard reversible gates, and
-records one thing the check turns up that the usual statements do not say.
+`fiberWidth` and `garbageBits` against the standard reversible gates.
+
+The gate counts here are not new — Maslov and Dueck (2004) give the minimum
+garbage *bit* count for any finite truth table, and the fact goes back to
+Toffoli (1980).  What the check is for is that the definitions in
+`Complexity.Garbage` reproduce them, and it is worth keeping because a
+definition that quietly disagreed with the literature would otherwise be
+found out late.
 
 ## What is checked
 
@@ -27,12 +33,13 @@ records one thing the check turns up that the usual statements do not say.
 
 ## The slack between values and bits
 
-`and` is the smallest case where the two ways of counting disagree.  The
-least number of garbage *values* is 3, but garbage is stored in bits, and
-2 bits hold 4.  The missing value cannot be recovered by a cleverer gate:
-any bit-addressed garbage register rounds up to a power of two.  So there
-are two different optimality claims about the Toffoli gate, and only the
-weaker one is true:
+The literature states the minimum in *bits*.  Counting in *values*, as
+`fiberWidth` does, is the finer measure, and `and` is the smallest case where
+the two come apart.  The least number of garbage values is 3, but garbage is
+stored in bits, and 2 bits hold 4.  The missing value cannot be recovered by a
+cleverer gate: any bit-addressed garbage register rounds up to a power of two.
+So there are two different optimality claims about the Toffoli gate, and only
+the weaker one is true:
 
 * optimal in bits — true, 2 bits is the minimum;
 * optimal in values — false, it uses 4 where 3 suffice.

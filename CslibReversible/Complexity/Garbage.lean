@@ -41,7 +41,9 @@ definite answer.
   segment.  This is the mechanized form of the *g-minimality* construction of
   Glück and Yokoyama.
 - `isLeast_garbageCard`: putting the two together, `fiberWidth f` **is** the
-  minimum number of garbage values, not merely a bound.
+  minimum number of garbage values, not merely a bound.  This is Maslov and
+  Dueck's Theorem 1 — see the attribution note below; the mechanization is
+  what is new, not the statement.
 - `garbageBits_eq_zero_iff`: `f` can be computed garbage-free exactly when it
   is injective.
 
@@ -69,8 +71,40 @@ in Mathlib itself.  `Quot.sound` is unavoidable in any case, `Finset` being a
 quotient of `List`.  The audit in `CslibReversible.Audit` pins the resulting
 axiom set so that it cannot grow unnoticed.
 
+## Attribution: what is new here is the proof, not the theorem
+
+`isLeast_garbageCard` is **not a new result.**  That the minimum number of
+garbage bits needed to make a finite total function reversible is
+`⌈log₂ μ⌉`, where `μ` is the largest number of inputs sharing an output, is
+
+* Maslov and Dueck, Theorem 1 (2004), stated for the truth table of an `n × m`
+  function — `μ` is there "the maximum of number of times an output pattern is
+  repeated in the truth table", which is the fiber width;
+* and it goes back to Toffoli (1980), as Glück and Yokoyama's survey records.
+
+The proof structure is the same too: bound below by the largest fiber, then
+observe that enough bits to separate that fiber separate every other one.
+
+What this file adds is the **mechanization** — the result appears not to have
+been machine-checked before — and a form that generalizes past the finite
+Boolean truth-table setting the sources restrict themselves to.  In
+particular the statement here is about garbage *values* rather than bits,
+which is where `Complexity.Examples` finds that the two counts come apart.
+
+The construction in `realizationOfEmbedding` is the *g-minimality* of Glück
+and Yokoyama: the garbage it uses is downward closed in the enumeration order.
+
 ## References
 
+* T. Toffoli.  *Reversible computing.*  ICALP 1980, LNCS 85, 632–644.
+  [doi:10.1007/3-540-10003-2_104](https://doi.org/10.1007/3-540-10003-2_104)
+* D. Maslov, G. W. Dueck.  *Reversible Cascades With Minimal Garbage.*
+  IEEE Transactions on Computer-Aided Design of Integrated Circuits and
+  Systems 23(11), 1497–1509, 2004.
+  [doi:10.1109/TCAD.2004.836735](https://doi.org/10.1109/TCAD.2004.836735)
+* R. Glück, T. Yokoyama.  *Reversible computing from a programming language
+  perspective.*  Theoretical Computer Science 953, 113429, 2023.
+  [doi:10.1016/j.tcs.2022.06.010](https://doi.org/10.1016/j.tcs.2022.06.010)
 * R. Glück, T. Yokoyama.  *Making Programs Reversible with Minimal Extra
   Data.*  Reversible Computation, 2019.
 * C. H. Bennett.  *Logical reversibility of computation.*  IBM Journal of
@@ -295,6 +329,10 @@ theorem exists_realization_of_card_le {f : X → Y} [Fintype G]
 Both halves are needed for this to be a definition of a resource rather than
 an estimate: the lower bound says no realization can do better, the upper
 bound says one achieves it.
+
+This is Maslov and Dueck's Theorem 1 (2004), counted in values rather than in
+bits; the fact goes back to Toffoli (1980).  See the attribution note in the
+module docstring.
 -/
 theorem isLeast_garbageCard (f : X → Y) :
     IsLeast {n : ℕ | ∃ G : Type, ∃ _ : Fintype G, Fintype.card G = n ∧

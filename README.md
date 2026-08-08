@@ -68,6 +68,13 @@ construction achieving it ranks each input inside its own fiber, so the garbage
 values it uses form an initial segment — this is the *g-minimality* of Glück
 and Yokoyama, mechanized.
 
+**The theorem is not new; the proof is.**  That the minimum garbage is
+`⌈log₂ μ⌉` bits, for `μ` the largest number of inputs sharing an output, is
+Theorem 1 of Maslov and Dueck (IEEE TCAD 23(11), 2004) and goes back to
+Toffoli (ICALP 1980).  What is contributed here is the machine-checked proof,
+which appears not to have been given before, and a statement in garbage
+*values* rather than bits — the finer of the two counts.
+
 `Complexity.Landauer` carries that number over to energy.  Reversible
 computation is usually motivated by Landauer's principle, and the motivation
 only bites once the garbage has to be cleared — so the file proves the counting
@@ -77,11 +84,12 @@ an instance.  It appears in the type of every result that uses it, so the line
 between what is proved and what is assumed about the world is visible in the
 statement rather than in the prose around it.
 
-The check against known gates is in `Complexity.Examples`, and it turns up
-something the usual statements do not say.  Conjunction needs 3 garbage values,
-so 2 bits; the Toffoli gate keeps both inputs, so 2 bits.  Toffoli is therefore
-optimal **in bits** — but it spends 4 values where 3 suffice, so it is not
-optimal **in values**, and no bit-addressed register can close that gap.
+The check against known gates is in `Complexity.Examples`, and counting in
+values rather than bits makes one distinction the bit count cannot.
+Conjunction needs 3 garbage values, so 2 bits; the Toffoli gate keeps both
+inputs, so 2 bits.  Toffoli is therefore optimal **in bits** — but it spends 4
+values where 3 suffice, so it is not optimal **in values**, and no
+bit-addressed register can close that gap.
 
 ## The instances
 
@@ -162,6 +170,15 @@ The Lean toolchain and the Mathlib revision follow CSLib's pin
   [doi:10.1007/978-3-030-45231-5_23](https://doi.org/10.1007/978-3-030-45231-5_23)
 * I. Phillips, I. Ulidowski.  *Reversing algebraic process calculi.*
   Journal of Logic and Algebraic Programming 73(1–2), 70–96, 2007.
+* T. Toffoli.  *Reversible computing.*  ICALP 1980, LNCS 85, 632–644.
+  [doi:10.1007/3-540-10003-2_104](https://doi.org/10.1007/3-540-10003-2_104)
+* D. Maslov, G. W. Dueck.  *Reversible Cascades With Minimal Garbage.*
+  IEEE Transactions on Computer-Aided Design of Integrated Circuits and
+  Systems 23(11), 1497–1509, 2004.
+  [doi:10.1109/TCAD.2004.836735](https://doi.org/10.1109/TCAD.2004.836735)
+* R. Glück, T. Yokoyama.  *Reversible computing from a programming language
+  perspective.*  Theoretical Computer Science 953, 113429, 2023.
+  [doi:10.1016/j.tcs.2022.06.010](https://doi.org/10.1016/j.tcs.2022.06.010)
 * F. Montesi et al.  *CSLib: The Lean Computer Science Library.*
 
 ## License
