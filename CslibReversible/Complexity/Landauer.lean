@@ -34,13 +34,15 @@ tells us this" should be visible in the statement, not buried in prose.
 
 ## What is *not* claimed
 
-- **Not that the bound is attained.**  Landauer's `kT ln 2` is a
-  quasi-static limit.  Erasing in finite time costs strictly more, by an amount
-  that grows as the time allowed shrinks.  `landauer` is stated as a lower
-  bound only, which is the direction that is safe.
-- **Not that a real device is near it.**  The gap between `kT ln 2` and what
-  any current technology dissipates per operation is many orders of magnitude,
-  and it is not this bound that is binding in practice.
+- **Not that the bound is attained.**  Landauer's `kT ln 2` is a quasi-static
+  limit: saturating it "requires a reversible isothermal process, and hence
+  infinite time" (Rolandi and Perarnau-Llobet), and the bound "is only
+  achievable for infinite-time processes" (Konopik, Korten, Lutz and Linke).
+  Erasing in finite time costs strictly more.  `landauer` is therefore stated
+  as a lower bound only, which is the direction that stays safe.
+- **Not that a real device is near it.**  "Practical erasure processes
+  dissipate much more heat than the Landauer bound" (Chattopadhyay, Misra,
+  Pandit and Paul); it is not this bound that is binding in practice.
 - **Not that measured surplus is provable waste.**  If a machine's garbage
   register is wider than `garbageBits f`, that is not by itself evidence of a
   wasteful design: the extra width may be separating inputs outside whatever
@@ -51,8 +53,19 @@ tells us this" should be visible in the statement, not buried in prose.
 
 * R. Landauer.  *Irreversibility and heat generation in the computing
   process.*  IBM Journal of Research and Development 5(3), 183–191, 1961.
+  [doi:10.1147/rd.53.0183](https://doi.org/10.1147/rd.53.0183)
 * C. H. Bennett.  *The thermodynamics of computation — a review.*
   International Journal of Theoretical Physics 21(12), 905–940, 1982.
+  [doi:10.1007/BF02084158](https://doi.org/10.1007/BF02084158)
+* A. Rolandi, M. Perarnau-Llobet.  *Finite-time Landauer principle beyond weak
+  coupling.*  Quantum, 2023.
+  [doi:10.22331/q-2023-11-03-1161](https://doi.org/10.22331/q-2023-11-03-1161)
+* M. Konopik, T. Korten, E. Lutz, H. Linke.  *Fundamental energy cost of
+  finite-time parallelizable computing.*  Nature Communications, 2023.
+  [doi:10.1038/s41467-023-36020-2](https://doi.org/10.1038/s41467-023-36020-2)
+* P. Chattopadhyay, A. Misra, T. Pandit, G. Paul.  *Landauer principle and
+  thermodynamics of computation.*  Reports on Progress in Physics, 2025.
+  [doi:10.1088/1361-6633/add6b3](https://doi.org/10.1088/1361-6633/add6b3)
 -/
 
 universe u v w
