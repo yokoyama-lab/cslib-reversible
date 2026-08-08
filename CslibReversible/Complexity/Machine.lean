@@ -60,10 +60,13 @@ variable {State : Type u} {Label : Type v} {X : Type x} {Y : Type*} {Garb : Type
 A reversible machine computing `f`.
 
 `readout` presents a configuration as an answer together with everything else
-the configuration still holds; it is required to be injective because it is a
-*change of view* on the configuration, not a summary that may forget part of
-it.  A machine whose readout genuinely forgot something would not be
-reversible.
+the configuration still holds.  It has to lose nothing *on the configurations
+the machine actually halts in* — there, it is a change of view rather than a
+summary.  Elsewhere it may forget as much as it likes, and it generally must:
+a halting configuration is usually recognisable by a program counter or a
+control state that carries no information once the machine has stopped, and
+demanding an injective readout on the whole state space would force that dead
+weight into the garbage count.
 -/
 structure Computes (lts : LTS State Label) (f : X → Y) (Garb : Type w) where
   /-- The start configuration for an input. -/
@@ -78,8 +81,8 @@ structure Computes (lts : LTS State Label) (f : X → Y) (Garb : Type w) where
   rewinds : ∀ x, Relation.ReflTransGen (BStep lts) (final x) (input x)
   /-- A configuration, viewed as an answer together with the rest of it. -/
   readout : State → Y × Garb
-  /-- The view loses nothing. -/
-  readout_injective : Function.Injective readout
+  /-- The view loses nothing where the machine halts. -/
+  readout_injOn : Set.InjOn readout (Set.range final)
   /-- What the machine halts holding answers the question. -/
   readout_fst : ∀ x, (readout (final x)).1 = f x
 
@@ -125,7 +128,8 @@ def toRealization
     intro x x' h
     simp only [Prod.mk.injEq] at h
     obtain ⟨hf, hg⟩ := h
-    refine final_injective (Indep := Indep) C (C.readout_injective (Prod.ext ?_ hg))
+    refine final_injective (Indep := Indep) C
+      (C.readout_injOn ⟨x, rfl⟩ ⟨x', rfl⟩ (Prod.ext ?_ hg))
     rw [C.readout_fst, C.readout_fst, hf]
 
 /--
