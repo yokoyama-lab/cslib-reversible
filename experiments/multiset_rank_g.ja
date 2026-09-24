@@ -1,0 +1,90 @@
+// @summary:   多重集合の配置のランキング（＝比較ソートの最小ゴミ）
+// @technique: multiset ranking / combinatorial number system
+// @keep:      a, n, c, N
+// @expect: a[6] = {0, 0, 0, 0, 0, 0}
+// @expect: c[4] = {1, 2, 2, 1}
+// @expect: r = 158
+// @expect: N = 180
+//
+// なぜこのファイルがあるか
+// ------------------------
+// Axelsen-Yokoyama (APLAS 2015) は比較ソートのゴミを置換で表し、直接置換・
+// 階乗表現・rank の 3 表現がゴミなしで相互変換できることを示した。どれも
+// log2(n!) ビットを達成する。論文は下界を
+//
+//   "If we have an array of distinct elements, the number of possible
+//    starting permutations is n!."
+//
+// と **distinct elements を明示的に仮定して** 述べている。
+//
+// キーが重複するとき、繊維の大きさは階乗ではなく **多項係数** である:
+//
+//   fiberWidth(sort) = max over 多重集合 of  n! / (m_1! ... m_b!)
+//
+// 値域 b を固定すると log2(多項係数) = Theta(n) に対し log2(n!) = Theta(n log n)
+// なので、差は定数倍ではなく Theta(log n) 倍に開く（n=10^6, b=4 で 9.24 倍）。
+// したがって論文の 3 表現はいずれも重複キーでは最小でない。
+//
+// このファイルは最小の表現を実際に構成する。写像
+//
+//   a[]  ->  (c[], r)        c[] = 各値の個数（整列済み出力と同じ情報）
+//                            r   = その多重集合の配置の辞書順ランク
+//
+// は全単射で、r の値域はちょうど max 多項係数に一致する（参照実装
+// multiset_rank_ref.py で 9 構成を全数検査済み）。
+//
+// 向きについて
+// ------------
+// 前向きに a[] -> (c[],r) を書くと、a[i] を零クリアする delocal に書ける式が
+// ない（復元には逆計算そのものが要る）。逆向き **unrank** は a[] が 0 から
+// 育つので素直に書ける。よって unrank を手続きとして書き、main で uncall する。
+// これは APLAS 論文の付録が decfac2rank ひとつで両向きを賄うのと同じ作法である。
+//
+// 除算はすべて厳密である（参照実装の assert で確認済み）:
+//   N(c') = N(c) * L1 / c'[v]      ブロック幅 = N * c[u] / L1
+
+procedure msunrank(int a[], int n, int c[], int r, int N)
+  // 事前: a[]=0, c[]=個数, 0<=r<N, N=多項係数
+  // 事後: a[]=配置, c[]=0, r=0, N=1
+  local int i = 0
+    from  i = 0
+    loop  local int L1 = n - i                    // 残りの長さ
+            local int v = 0
+              local int blk = N * c[0] / L1       // 値 0 で始まる配置の個数
+                from  v = 0
+                loop  r -= blk                    // このブロックを飛ばす
+                      v += 1
+                      local int nb = N * c[v] / L1
+                        nb <=> blk
+                      delocal int nb = N * c[v-1] / L1
+                until r < blk                     // r がこのブロックに入った
+                a[i] += v                         // 位置 i の値が決まった
+                N <=> blk                         // N を接尾辞の多項係数へ更新
+                c[v] -= 1
+              delocal int blk = N * L1 / (c[v]+1) // 入れ替え前の N
+            delocal int v = a[i]                  // v は a[i] に書いたので復元できる
+          delocal int L1 = n - i
+          i += 1
+    until i = n
+  delocal int i = n
+
+procedure main()
+  int a[6]     // 入力の配置。uncall 後は 0
+  int n
+  int c[4]     // 各値の個数 ＝ 整列済み出力（保持出力）
+  int r        // ランク ＝ ゴミ。値域は max 多項係数 = 180
+  int N        // 多項係数。c[] から決まるので情報としては冗長
+
+  // 入力スロットを先頭に置く。測定器と検証器がどちらも既定（先頭から）で
+  // 同じ 6 スロットを振れるようにするため。
+  a[0] += 3
+  a[1] += 1
+  a[2] += 0
+  a[3] += 2
+  a[4] += 2
+  a[5] += 1
+
+  n += 6
+  N += 1
+
+  uncall msunrank(a,n,c,r,N)

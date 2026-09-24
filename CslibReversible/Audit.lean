@@ -16,7 +16,10 @@ import CslibReversible.CausalLiveness
 import CslibReversible.Independence
 import CslibReversible.Instances.Product
 import CslibReversible.Complexity.Garbage
+import CslibReversible.Complexity.GarbagePrefixSum
 import CslibReversible.Complexity.Machine
+import CslibReversible.Complexity.Sorting
+import CslibReversible.Complexity.Asymptotic
 
 /-!
 # Axiom audit
@@ -265,3 +268,62 @@ info: 'Cslib.Reversible.Computes.fiberWidth_le_card' depends on axioms: [propext
 -/
 #guard_msgs (whitespace := lax) in
 #print axioms Cslib.Reversible.Computes.fiberWidth_le_card
+
+-- ソートの下界（`Complexity/Sorting.lean`）。`b = 2` の組合せ的解釈は Finset の
+-- 濃度を数えるので、上の `fiberWidth_le_card` と同じ理由で choice に依存する。
+/--
+info: 'Cslib.Reversible.Sorting.card_fiber_counts_two' depends on axioms: [propext,
+  Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.Sorting.card_fiber_counts_two
+
+/--
+info: 'Cslib.Reversible.Sorting.fiberWidth_counts_two' depends on axioms: [propext,
+  Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.Sorting.fiberWidth_counts_two
+
+/-! ## The asymptotic layer -/
+
+-- The collapse of the garbage class.  Both halves are used: the machine lower
+-- bound and the one-step machine built from the rank-within-fiber realization,
+-- so the axiom set is that of the complexity layer and nothing more.
+/--
+info: 'Cslib.Reversible.mem_revGARB_iff' depends on axioms: [propext, Classical.choice,
+  Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.mem_revGARB_iff
+
+/--
+info: 'Cslib.Reversible.isLeast_revMachineGarbageBits' depends on axioms: [propext,
+  Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.isLeast_revMachineGarbageBits
+
+/--
+info: 'Cslib.Reversible.exists_revMachine_fin_fiberWidth' depends on axioms: [propext,
+  Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.exists_revMachine_fin_fiberWidth
+
+-- The prefix-sum composition (`Complexity.GarbagePrefixSum`) adds nothing to
+-- the complexity layer's axioms: it is `Finset` counting over `Garbage`, so
+-- the same three appear and no more.
+/--
+info: 'Cslib.Reversible.prefixGarbage_bijOn_fiber' depends on axioms: [propext, Classical.choice,
+  Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.prefixGarbage_bijOn_fiber
+
+/--
+info: 'Cslib.Reversible.card_image_prefixGarbage' depends on axioms: [propext, Classical.choice,
+  Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Cslib.Reversible.card_image_prefixGarbage

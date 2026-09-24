@@ -4,10 +4,14 @@ import CslibReversible.CausalConsistency
 import CslibReversible.CausalEquiv
 import CslibReversible.CausalLiveness
 import CslibReversible.CausalSafety
+import CslibReversible.Complexity.Asymptotic
 import CslibReversible.Complexity.Examples
 import CslibReversible.Complexity.Garbage
+import CslibReversible.Complexity.GarbageComposition
+import CslibReversible.Complexity.GarbagePrefixSum
 import CslibReversible.Complexity.Landauer
 import CslibReversible.Complexity.Machine
+import CslibReversible.Complexity.Sorting
 import CslibReversible.Complexity.ToffoliMachine
 import CslibReversible.Defs
 import CslibReversible.Diamond

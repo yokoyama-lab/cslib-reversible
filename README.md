@@ -62,6 +62,10 @@ conflates — the **garbage**.
 | `Complexity.Examples` | the definition checked against the standard gates |
 | `Complexity.ToffoliMachine` | a machine that meets the bound, so that the bound is about something |
 | `Complexity.Landauer` | what clearing the garbage costs in energy, with Landauer's principle isolated as an explicit hypothesis |
+| `Complexity.Asymptotic` | `garb f n = ⌈log₂ μ(f_n)⌉` on `{0,1}* → {0,1}*`, the class `RevGARB g`, and the **collapse** `f ∈ RevGARB g ↔ ∀ n, garb f n ≤ g n`; `RevMachine.ofRealization` turns any realization into a machine, so the least machine garbage is `garbageBits f` (`isLeast_revMachineGarbageBits`). No time bound is modelled |
+| `Complexity.GarbageComposition` | how garbage composes: the fiber-size *measure* composes exactly (`card_fiber_comp`), its maximum only submultiplicatively (`fiberWidth_comp_le`), strictly so on the three-input conjunction (7 values, not 9); constant fiber size makes the product exact |
+| `Complexity.GarbagePrefixSum` | a stage-by-stage encoding of the garbage of `f₂ ∘ f₁` by prefix sums of first-stage fiber sizes that is still minimal: it maps each fiber bijectively onto `{0, …, card − 1}` (`prefixGarbage_bijOn_fiber`) |
+| `Complexity.Sorting` | the garbage of sorting with repeated keys is a multinomial coefficient, not `n!`; proved for a **two-letter alphabet only** (`fiberWidth_counts_two`), the general alphabet is open and checked on 9 bounded configurations by `experiments/multiset_rank_ref.py` |
 
 The minimum number of garbage values for `f` is `max_y |f⁻¹(y)|`.  The
 construction achieving it ranks each input inside its own fiber, so the garbage
@@ -93,7 +97,18 @@ bit-addressed register can close that gap.
 
 ## The instances
 
-Each instance discharges the axioms and inherits everything above.
+What each instance inherits is exactly what the axioms it discharges buy, and
+the axioms are not all discharged everywhere:
+
+* **No instance provides `CPI`, `IRE`, `CIRE` or `BFCIRE`.**  Causal safety,
+  NRE and causal liveness are proved from those axioms, but no concrete system
+  in this repository is shown to satisfy them.
+* `Deterministic`, `Circuit` and `RCore` discharge the Square Property, `BTI`
+  and CLG over the empty independence relation `NoIndep`, where the Square
+  Property and CLG hold **vacuously**.  `CCSK` and `Product` are the instances
+  with a non-trivial independence relation.
+* `History`, `Grounded` and `Restrict` are constructions on an LTS, not systems;
+  they transport properties rather than discharge the axiom classes.
 
 | Module | What it is |
 |---|---|
@@ -109,10 +124,13 @@ Each instance discharges the axioms and inherits everything above.
 ## Trust
 
 Nothing here is admitted: the library builds with **no `sorry`**, and
-`Audit.lean` pins every headline result's axiom set with `#guard_msgs`, so
-the build fails if one changes.
+`Audit.lean` pins the axiom sets of the headline results of the modules it
+imports with `#guard_msgs`, so the build fails if one changes.  Its import list
+is the scope: `Complexity.ToffoliMachine`, `Landauer`, `Examples`,
+`GarbageComposition` and the instances other than `Product` are built and
+`sorry`-free but not pinned.
 
-The transition-system layer uses only `propext`.  In particular
+The transition-system layer uses at most `propext` and `Quot.sound`.  In particular
 `Classical.choice` is not used: the case split in `bstep_diamond` goes through
 `DecidableEq`, and `reflTransGen_cases_head` is reproved rather than taken
 from Mathlib, which proves it classically.

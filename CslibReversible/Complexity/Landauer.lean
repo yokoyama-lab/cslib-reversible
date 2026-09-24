@@ -48,7 +48,16 @@ tells us this" should be visible in the statement, not buried in prose.
   superconducting microprocessor of Ayala, Tanaka, Saito, Nozoe and Takeuchi
   switches at 1.4 zJ per junction at 4.2 K, where `kT ln 2` is 0.0402 zJ — a
   factor of about 35.  So for the reversible technologies this development is
-  about, the bound is far closer to binding than for CMOS.
+  about, the bound is far closer to binding than for CMOS — *each measured
+  against `kT ln 2` at its own operating temperature*; see the next item.
+- **Not a comparison at equal temperature.**  The two factors above are taken
+  at different `T`: at 300 K, `kT ln 2` is 2.87 zJ, so the 1.4 zJ of the
+  4.2 K device is about 0.49 times the *room-temperature* bound, and the
+  factor of 35 says nothing about which technology dissipates less.  Nor does
+  it count refrigeration: removing heat at 4.2 K into a 300 K environment
+  costs at least `(300 − 4.2) / 4.2 ≈ 70` joules of work per joule removed
+  (the Carnot limit), and a real cryocooler does worse.  This layer bounds the
+  heat released at the device, not the energy drawn at the wall.
 - **Not that saving garbage bits saves proportional system energy.**  Logic
   switching is only 20–30% of a modern processor's energy (Zhirnov, Cavin and
   Gammaitoni); over half the die energy goes to caches and register files
